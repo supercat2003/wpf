@@ -1,0 +1,431 @@
+USE [master]
+GO
+/****** Object:  Database [Trade]    Script Date: 29.05.2023 22:33:52 ******/
+CREATE DATABASE [Trade]
+ALTER DATABASE [Trade] SET COMPATIBILITY_LEVEL = 140
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Trade].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Trade] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Trade] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Trade] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Trade] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Trade] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Trade] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Trade] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Trade] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Trade] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Trade] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Trade] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Trade] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Trade] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Trade] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Trade] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Trade] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Trade] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Trade] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Trade] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Trade] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Trade] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Trade] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Trade] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [Trade] SET  MULTI_USER 
+GO
+ALTER DATABASE [Trade] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Trade] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Trade] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Trade] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Trade] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Trade] SET QUERY_STORE = OFF
+GO
+USE [Trade]
+GO
+/****** Object:  Table [dbo].[Order]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Order](
+	[OrderID] [int] IDENTITY(1,1) NOT NULL,
+	[OrderDate] [nvarchar](max) NULL,
+	[OrderDeliveryDate] [nvarchar](max) NULL,
+	[OrderPickupPoint] [int] NOT NULL,
+	[UserID] [int] NULL,
+	[OrderCode] [float] NULL,
+	[OrderStatus] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Order$] PRIMARY KEY CLUSTERED 
+(
+	[OrderID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[PickUpPoint]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[PickUpPoint](
+	[PickupPointID] [int] IDENTITY(1,1) NOT NULL,
+	[PickupPointAddress] [nvarchar](max) NULL,
+ CONSTRAINT [PK_PickUpPoint$] PRIMARY KEY CLUSTERED 
+(
+	[PickupPointID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Product]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Product](
+	[ProductArticleNumber] [nvarchar](100) NOT NULL,
+	[ProductName] [nvarchar](max) NULL,
+	[ProductValue] [nvarchar](100) NULL,
+	[ProductCost] [decimal](19, 4) NULL,
+	[ProductDiscountAmountMax] [tinyint] NULL,
+	[ProductManufacturer] [nvarchar](max) NULL,
+	[ProductSupplier] [nvarchar](max) NULL,
+	[ProductCategory] [nvarchar](max) NULL,
+	[ProductDiscountAmount] [tinyint] NULL,
+	[ProductQuantityInStock] [int] NULL,
+	[ProductDescription] [nvarchar](max) NULL,
+	[ProductPhoto] [nvarchar](max) NULL,
+ CONSTRAINT [PK_Product$] PRIMARY KEY CLUSTERED 
+(
+	[ProductArticleNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ProductOrder]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ProductOrder](
+	[OrderID] [int] NOT NULL,
+	[ProductArticleNumber] [nvarchar](100) NOT NULL,
+	[NumberofOrder] [float] NULL,
+ CONSTRAINT [PK_ProductOrder$] PRIMARY KEY CLUSTERED 
+(
+	[OrderID] ASC,
+	[ProductArticleNumber] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Role]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Role](
+	[RoleID] [int] IDENTITY(1,1) NOT NULL,
+	[RoleName] [nvarchar](100) NULL,
+ CONSTRAINT [PK_Role$] PRIMARY KEY CLUSTERED 
+(
+	[RoleID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[User]    Script Date: 29.05.2023 22:33:52 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[User](
+	[UserID] [int] IDENTITY(1,1) NOT NULL,
+	[UserSurname] [nvarchar](100) NULL,
+	[UserName] [nvarchar](100) NULL,
+	[UserPatronymic] [nvarchar](100) NULL,
+	[UserLogin] [nvarchar](max) NULL,
+	[UserPassword] [nvarchar](max) NULL,
+	[RoleID] [int] NOT NULL,
+ CONSTRAINT [PK_User$] PRIMARY KEY CLUSTERED 
+(
+	[UserID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Order] ON 
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (1, N'май 10 2022 12:00AM', N'май 16 2022 12:00AM', 27, 7, 811, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (2, N'май 11 2022 12:00AM', N'май 17 2022 12:00AM', 5, NULL, 812, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (3, N'май 12 2022 12:00AM', N'май 18 2022 12:00AM', 29, NULL, 813, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (4, N'май 13 2022 12:00AM', N'май 19 2022 12:00AM', 10, NULL, 814, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (5, N'май 14 2022 12:00AM', N'май 20 2022 12:00AM', 31, 8, 815, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (6, N'май 15 2022 12:00AM', N'май 21 2022 12:00AM', 32, NULL, 816, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (7, N'май 16 2022 12:00AM', N'май 22 2022 12:00AM', 20, NULL, 817, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (8, N'май 17 2022 12:00AM', N'май 23 2022 12:00AM', 34, 9, 818, N'Завершен')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (9, N'май 18 2022 12:00AM', N'май 24 2022 12:00AM', 35, 10, 819, N'Новый ')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (10, N'май 19 2022 12:00AM', N'май 25 2022 12:00AM', 36, NULL, 820, N'Завершен')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (11, N'29.05.2023 14:12:09', N'05.06.2023 14:12:09', 10, NULL, 222, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (12, N'29.05.2023 14:12:14', N'05.06.2023 14:12:14', 10, NULL, 930, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (13, N'29.05.2023 14:12:33', N'05.06.2023 14:12:33', 10, NULL, 230, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (14, N'29.05.2023 14:12:34', N'05.06.2023 14:12:34', 10, NULL, 339, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (15, N'29.05.2023 14:12:34', N'05.06.2023 14:12:34', 10, NULL, 211, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (16, N'29.05.2023 14:12:35', N'05.06.2023 14:12:35', 10, NULL, 405, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (17, N'29.05.2023 14:12:35', N'05.06.2023 14:12:35', 10, NULL, 305, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (18, N'29.05.2023 14:12:51', N'05.06.2023 14:12:51', 10, NULL, 402, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (19, N'29.05.2023 14:12:52', N'05.06.2023 14:12:52', 10, NULL, 258, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (20, N'29.05.2023 14:12:52', N'05.06.2023 14:12:52', 10, NULL, 158, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (21, N'29.05.2023 14:12:52', N'05.06.2023 14:12:52', 10, NULL, 352, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (22, N'29.05.2023 14:12:52', N'05.06.2023 14:12:52', 10, NULL, 575, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (23, N'29.05.2023 14:12:59', N'05.06.2023 14:12:59', 10, NULL, 492, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (24, N'29.05.2023 14:12:59', N'05.06.2023 14:12:59', 10, NULL, 605, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (25, N'29.05.2023 14:13:00', N'05.06.2023 14:13:00', 10, NULL, 426, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (26, N'29.05.2023 14:13:00', N'05.06.2023 14:13:00', 10, NULL, 796, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (27, N'29.05.2023 14:14:22', N'05.06.2023 14:14:22', 36, NULL, 364, N'Новый')
+GO
+INSERT [dbo].[Order] ([OrderID], [OrderDate], [OrderDeliveryDate], [OrderPickupPoint], [UserID], [OrderCode], [OrderStatus]) VALUES (28, N'29.05.2023 14:17:33', N'05.06.2023 14:17:33', 32, NULL, 623, N'Новый')
+GO
+SET IDENTITY_INSERT [dbo].[Order] OFF
+GO
+SET IDENTITY_INSERT [dbo].[PickUpPoint] ON 
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (5, N'614164, г.Кропоткин,  ул. Степная, 30')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (10, N'660540, г. Кропоткин, ул. Солнечная, 25')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (20, N'625283, г. Кропоткин, ул. Победы, 46')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (27, N'344288, г. Кропоткин, ул. Чехова, 1')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (29, N'394242, г. Кропоткин, ул. Коммунистическая, 43')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (31, N'125837, г. Кропоткин, ул. Шоссейная, 40')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (32, N'125703, г. Кропоткин, ул. Партизанская, 49')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (34, N'614611, г. Кропоткин, ул. Молодежная, 50')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (35, N'454311, г.Кропоткин, ул. Новая, 19')
+GO
+INSERT [dbo].[PickUpPoint] ([PickupPointID], [PickupPointAddress]) VALUES (36, N'660007, г.Кропоткин, ул. Октябрьская, 19')
+GO
+SET IDENTITY_INSERT [dbo].[PickUpPoint] OFF
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'B111C5                                                                                              ', N'123', N'Рулон                                                                                               ', CAST(123.0000 AS Decimal(19, 4)), NULL, N'123', N'123', N'H497J3', 123, 123, N'123', N'picture.png')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'C384D8', N'Сатин «Дымчатая роза» однотонный', N'Рулон', CAST(1133.0000 AS Decimal(19, 4)), 10, N'Империя ткани', N'Раута', N'Постельные ткани', 3, 4, N'Сатин «Дымчатая роза» однотонный шириной 250 см с изображением на ткани цветовая гамма: розовый зефир.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'D938K3', N'Фланель однотонная светлая', N'Рулон', CAST(1300.0000 AS Decimal(19, 4)), 10, N'Май Фабрик', N'ГК Петров', N'Ткани для изделий', 4, 10, N'Фланель однотонная светлая оптом шириной 90 см с изображением на ткани — однотонное; цветовая гамма: голубая, желтая, розовая, сирень, фисташка.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'E112C6', N'Муслин «Bej»', N'Рулон', CAST(10500.0000 AS Decimal(19, 4)), 15, N'Империя ткани', N'ООО Афо-Тек', N'Детские ткани', 3, 13, N'Муслин «Bej» однотонный шириной 140+/-5 см с изображением на ткани — однотонный; цветовая гамма: кофе с молоком.', N'E112C6.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'F374S8', N'Фланель рубашечная', N'Рулон', CAST(2100.0000 AS Decimal(19, 4)), 5, N'БТК Текстиль', N'Раута', N'Ткани для изделий', 2, 5, N'Фланель рубашечная шириной 150 см с изображением на ткани — клетка; цветовая гамма: светло-коричневая, синий-королевский.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'H483D9', N'Фланель детская H483D9', N'Рулон', CAST(318.0000 AS Decimal(19, 4)), 5, N'Комильфо', N'ООО Афо-Тек', N'Детские ткани', 2, 18, N'Фланель детская 21212-2 шириной 90 см с изображением на ткани — россыпь звездочек; цветовая гамма: баклажан, оранжевый, розовая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'H497J3', N'Ситец детский', N'Рулон', CAST(523.0000 AS Decimal(19, 4)), 5, N'БТК Текстиль', N'ГК Петров', N'Детские ткани', 2, 8, N'Ситец детский шириной 95 см с изображением на ткани — котята, сердечки; цветовая гамма: белоземельная, оранжевый.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'I483H3', N'Ткань поплин «Вивьен»', N'Рулон', CAST(11300.0000 AS Decimal(19, 4)), 10, N'БТК Текстиль', N'ООО Афо-Тек', N'Постельные ткани', 2, 5, N'Ткань поплин «Вивьен» шириной 220 см с изображением на ткани — горошек; цветовая гамма: синяя, фисташка.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'K284U8', N'Бязь детская «Самолеты»', N'Рулон', CAST(5100.0000 AS Decimal(19, 4)), 25, N'Империя ткани', N'ГК Петров', N'Детские ткани', 3, 2, N'Бязь детская «Самолеты» шириной 150 см с изображением на ткани — игрушки, самолетики; цветовая гамма: белая, зеленая, синяя. ', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'K839K3', N'Плюш белый в клетку', N'Рулон', CAST(765.0000 AS Decimal(19, 4)), 5, N'Империя ткани', N'ГК Петров', N'Детские ткани', 2, 3, N'Плюш белый в клетку шириной 180 см с изображением на ткани — клетка, однотонный; цветовая гамма: белая, однотонная.', N'K839K3.JPG ')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'L293S9', N'Плюш розовый гладкий', N'Рулон', CAST(30000.0000 AS Decimal(19, 4)), 40, N'Комильфо', N'Раута', N'Детские ткани', 3, 2, N'Плюш розовый гладкий шириной 180 см с изображением на ткани — однотонный; цветовая гамма: однотонная, розовая.', N'L293S9.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'M112C8', N'Бязь детская «Совята»', N'Рулон', CAST(26000.0000 AS Decimal(19, 4)), 20, N'Империя ткани', N'Раута', N'Детские ткани', 2, 14, N'Бязь детская «Совята» шириной 150 см с изображением на ткани — совы; цветовая гамма: бордо, желтая, салатовая.', N'M112C8.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'M294G9', N'Полотно вафельное «8 марта»', N'Рулон', CAST(5130.0000 AS Decimal(19, 4)), 5, N'Империя ткани', N'Раута', N'Ткани для изделий', 2, 1, N'Полотно вафельное «8 марта» шириной 50 см с изображением на ткани — белые розы; цветовая гамма: розовая.', N'M294G9.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'M398S9', N'Поплин Мокко', N'Рулон', CAST(1800.0000 AS Decimal(19, 4)), 15, N'Май Фабрик', N'ГК Петров', N'Постельные ткани', 2, 6, N'Поплин Мокко 220 см шириной 220 см с изображением на ткани — однотонное; цветовая гамма: коричневая, кофе, шоколад.', N'M398S9.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'N283K3', N'Сатин «Миндальный» однотонный', N'Рулон', CAST(6500.0000 AS Decimal(19, 4)), 5, N'Комильфо', N'Раута', N'Постельные ткани', 3, 7, N'Сатин «Миндальный» однотонный шириной 250 см с изображением на ткани цветовая гамма: миндаль. ', N'N283K3.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'N385L2', N'Сатин «Фисташковый» однотонный', N'Рулон', CAST(7000.0000 AS Decimal(19, 4)), 20, N'БТК Текстиль', N'ГК Петров', N'Постельные ткани', 2, 2, N'Сатин «Фисташковый» однотонный шириной 250 см с изображением на ткани цветовая гамма: фисташка.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'N387I8', N'Полотно вафельное «Кухня»', N'Рулон', CAST(1000.0000 AS Decimal(19, 4)), 15, N'БТК Текстиль', N'ООО Афо-Тек', N'Ткани для изделий', 3, 5, N'Полотно вафельное «Кухня» шириной 50 см с изображением на ткани — кухня; цветовая гамма: желтая, малина. ', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'N394K2', N'Ткань поплин «Лакшери»', N'Рулон', CAST(30660.0000 AS Decimal(19, 4)), 10, N'Империя ткани', N'ООО Афо-Тек', N'Постельные ткани', 4, 15, N'Ткань поплин «Лакшери» шириной 220 см с изображением на ткани — надписи, сердечки; цветовая гамма: белая, красная, черная. ', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'O947D8', N'Ткань для скатертей под рогожку', N'Рулон', CAST(3550.0000 AS Decimal(19, 4)), 10, N'Май Фабрик', N'ООО Афо-Тек', N'Ткани для изделий', 3, 9, N'Ткань для скатертей под рогожку «рис 18825» шириной 150 см с изображением на ткани — ромашки, россыпь цветов; цветовая гамма: красная, синяя.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'P495H8', N'Поплин «Густав»', N'Рулон', CAST(1000.0000 AS Decimal(19, 4)), 15, N'Комильфо', N'Раута', N'Постельные ткани', 2, 14, N'Поплин «Густав» шириной 220 см с изображением на ткани — листья, папортник; цветовая гамма: зеленая, светло-серая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'Q836H4', N'Фланель рубашечная', N'Рулон', CAST(1350.0000 AS Decimal(19, 4)), 5, N'Май Фабрик', N'Раута', N'Ткани для изделий', 4, 7, N'Фланель арт 535 рубашечная шириной 150 см с изображением на ткани — клетка; цветовая гамма: светло-коричневая, синий-королевский.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'R748K3', N'Поплин Морская волна', N'Рулон', CAST(2300.0000 AS Decimal(19, 4)), 15, N'Май Фабрик', N'ГК Петров', N'Постельные ткани', 2, 6, N'Поплин Морская волна 220 см шириной 220 см с изображением на ткани — однотонное; цветовая гамма: аквамарин, бирюзовая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'R983K4', N'Сатин «Серо-бежевый» однотонный', N'Рулон', CAST(1645.0000 AS Decimal(19, 4)), 15, N'Империя ткани', N'ООО Афо-Тек', N'Постельные ткани', 2, 13, N'Сатин «Серо-бежевый» однотонный шириной 250 см с изображением на ткани цветовая гамма: серо-бежевая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'S384K2', N'Фланель черная', N'Рулон', CAST(69000.0000 AS Decimal(19, 4)), 40, N'БТК Текстиль', N'ГК Петров', N'Ткани для изделий', 4, 2, N'Фланель черная оптом шириной 90 см с изображением на ткани — однотонное; цветовая гамма: черная.', N'S384K2.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'T238C7', N'Муслин «Gri»', N'Рулон', CAST(6500.0000 AS Decimal(19, 4)), 15, N'БТК Текстиль', N'ООО Афо-Тек', N'Детские ткани', 2, 12, N'Муслин «Gri» однотонный шириной 140+/-5 см с изображением на ткани — однотонный; цветовая гамма: серая.', N'T238C7.JPG')
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'U947E9', N'Муслин белый горошек на однотонном фоне', N'Рулон', CAST(3411.0000 AS Decimal(19, 4)), 10, N'Империя ткани', N'ГК Петров', N'Детские ткани', 3, 4, N'Муслин белый горошек на однотонном фоне шириной 150 см с изображением на ткани — мелкий горошек; цветовая гамма: желтая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'V378J3', N'Ситец детский', N'Рулон', CAST(2400.0000 AS Decimal(19, 4)), 15, N'Комильфо', N'ГК Петров', N'Детские ткани', 3, 14, N'Ситец детский шириной 95 см с изображением на ткани — котенок, облака, полумесяц, радуга; цветовая гамма: бледно-розовая, голубая, салатовая, серо-бежевая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'W874J3', N'Ткань поплин «Натурель»', N'Рулон', CAST(1600.0000 AS Decimal(19, 4)), 5, N'БТК Текстиль', N'ГК Петров', N'Постельные ткани', 3, 9, N'Ткань поплин «Натурель» шириной 220 см с изображением на ткани — мелкие цветы; цветовая гамма: пепельная, розовая. ', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'X846D3', N'Ситец детский', N'Рулон', CAST(9300.0000 AS Decimal(19, 4)), 25, N'Империя ткани', N'Раута', N'Детские ткани', 3, 5, N'Ситец детский шириной 95 см с изображением на ткани — жираф, полумесяц, пчелки; цветовая гамма: темно-фиолетовая.', NULL)
+GO
+INSERT [dbo].[Product] ([ProductArticleNumber], [ProductName], [ProductValue], [ProductCost], [ProductDiscountAmountMax], [ProductManufacturer], [ProductSupplier], [ProductCategory], [ProductDiscountAmount], [ProductQuantityInStock], [ProductDescription], [ProductPhoto]) VALUES (N'Z937S2', N'Поплин Голубой', N'Рулон', CAST(9000.0000 AS Decimal(19, 4)), 10, N'БТК Текстиль', N'Раута', N'Постельные ткани', 2, 15, N'Поплин Голубой 220 см шириной 220 см с изображением на ткани — однотонное; цветовая гамма: голубая.', NULL)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (1, N'B111C5', 5)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (1, N'T238C7', 7)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (2, N'E112C6', 5)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (2, N'T238C7', 9)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (3, N'L293S9', 8)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (3, N'M112C8', 4)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (4, N'M294G9', 6)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (4, N'S384K2', 1)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (5, N'Q836H4', 1)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (5, N'W874J3', 2)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (6, N'O947D8', 4)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (6, N'R983K4', 1)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (7, N'H497J3', 2)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (7, N'N394K2', 5)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (8, N'P495H8', 3)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (8, N'X846D3', 1)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (9, N'K284U8', 3)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (9, N'V378J3', 2)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (10, N'I483H3', 7)
+GO
+INSERT [dbo].[ProductOrder] ([OrderID], [ProductArticleNumber], [NumberofOrder]) VALUES (10, N'N387I8', 6)
+GO
+SET IDENTITY_INSERT [dbo].[Role] ON 
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (1, N'Администратор')
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (2, N'Менеджер')
+GO
+INSERT [dbo].[Role] ([RoleID], [RoleName]) VALUES (3, N'Клиент')
+GO
+SET IDENTITY_INSERT [dbo].[Role] OFF
+GO
+SET IDENTITY_INSERT [dbo].[User] ON 
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (1, N'Лавров', N'Богдан', N'Львович', N'8lf0g@yandex.ru', N'2L6KZG', 1)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (2, N'Смирнова', N'Полина', N'Фёдоровна', N'1zx8@yandex.ru', N'uzWC67', 1)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (3, N'Полякова', N'София', N'Данииловна', N'x@mail.ru', N'8ntwUp', 1)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (4, N'Чеботарева', N'Марина', N'Данииловна', N'34d@gmail.com', N'YOyhfR', 2)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (5, N'Ермолов', N'Адам', N'Иванович', N'pxacl@mail.ru', N'RSbvHv', 2)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (6, N'Васильев', N'Андрей', N'Кириллович', N'7o1@gmail.com', N'rwVDh9', 2)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (7, N'Маслов', N'Максим', N'Иванович', N'1@gmail.com', N'LdNyos', 3)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (8, N'Симонов', N'Михаил', N'Тимурович', N'iut@gmail.com', N'gynQMT', 3)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (9, N'Павлова', N'Ксения', N'Михайловна', N'e3t@outlook.com', N'AtnDjr', 3)
+GO
+INSERT [dbo].[User] ([UserID], [UserSurname], [UserName], [UserPatronymic], [UserLogin], [UserPassword], [RoleID]) VALUES (10, N'Трифонов', N'Григорий', N'Юрьевич', N'41clb6o2g@yandex.ru', N'JlFRCZ', 3)
+GO
+SET IDENTITY_INSERT [dbo].[User] OFF
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_PickUpPoint] FOREIGN KEY([OrderPickupPoint])
+REFERENCES [dbo].[PickUpPoint] ([PickupPointID])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_PickUpPoint]
+GO
+ALTER TABLE [dbo].[Order]  WITH CHECK ADD  CONSTRAINT [FK_Order_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+GO
+ALTER TABLE [dbo].[Order] CHECK CONSTRAINT [FK_Order_User]
+GO
+ALTER TABLE [dbo].[ProductOrder]  WITH CHECK ADD  CONSTRAINT [FK_ProductOrder_Order] FOREIGN KEY([OrderID])
+REFERENCES [dbo].[Order] ([OrderID])
+GO
+ALTER TABLE [dbo].[ProductOrder] CHECK CONSTRAINT [FK_ProductOrder_Order]
+GO
+ALTER TABLE [dbo].[ProductOrder]  WITH CHECK ADD  CONSTRAINT [FK_ProductOrder_Product] FOREIGN KEY([ProductArticleNumber])
+REFERENCES [dbo].[Product] ([ProductArticleNumber])
+GO
+ALTER TABLE [dbo].[ProductOrder] CHECK CONSTRAINT [FK_ProductOrder_Product]
+GO
+ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Role] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[Role] ([RoleID])
+GO
+ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Role]
+GO
+ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_User] FOREIGN KEY([UserID])
+REFERENCES [dbo].[User] ([UserID])
+GO
+ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_User]
+GO
+USE [master]
+GO
+ALTER DATABASE [Trade] SET  READ_WRITE 
+GO

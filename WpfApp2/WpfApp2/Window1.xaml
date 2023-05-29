@@ -1,0 +1,45 @@
+﻿<Window x:Class="WpfApp2.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp2"
+        mc:Ignorable="d"
+        Title="Товары" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontFamily="Comic Sans MS">Товары</Label>
+        <Button Grid.Row="0" Grid.Column="0" FontSize="16" Height="30" Width="200" Background="#FF498C51" Foreground="White" FontFamily="Comic Sans MS" Click="Button_Click">На главный экран</Button>
+        <Label Name="name"  Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontFamily="Comic Sans MS"></Label>
+        <ListView x:Name="lbProduct" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" HorizontalContentAlignment="Stretch">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"  Source="{Binding Photo}" Height="80" VerticalAlignment="Center" HorizontalAlignment="Center"></Image>
+                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                            <Label VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12" FontFamily="Comic Sans MS" FontWeight="Bold" Content="{Binding Name}"/>
+                            <Label VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12" FontFamily="Comic Sans MS" Content="{Binding Description}"/>
+                            <Label VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12" FontFamily="Comic Sans MS" Content="{Binding Manufacturer}"/>
+                            <Label VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12" FontFamily="Comic Sans MS" Content="{Binding Cost}"/>
+                        </StackPanel>
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" FontSize="12" FontFamily="Comic Sans MS" Content="{Binding QuantityInStock}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Window>
